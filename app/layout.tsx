@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NextUIProvider } from "@nextui-org/react";
 import { Providers } from "./providers";
-
+import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,12 +15,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-      <Providers>
-          {children}
-        </Providers>
+          <Providers>
+          <Toaster position="bottom-center" reverseOrder={false} />
+            {children}
+          </Providers>
       </body>
     </html>
   );

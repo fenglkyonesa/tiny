@@ -2,19 +2,11 @@
 import React from 'react'
 import Logo from './Logo';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from '@nextui-org/react';
-// import { Activity, ChevronDown, Flash, Lock, Scale, Server, TagUser } from './Icons';
+import { ChevronDown } from 'lucide-react';
 
 export default function MdNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  // const icons = {
-  //   chevron: <ChevronDown fill="currentColor" size={16} />,
-  //   scale: <Scale className="text-warning" fill="currentColor" size={30} />,
-  //   lock: <Lock className="text-success" fill="currentColor" size={30} />,
-  //   activity: <Activity className="text-secondary" fill="currentColor" size={30} />,
-  //   flash: <Flash className="text-primary" fill="currentColor" size={30} />,
-  //   server: <Server className="text-success" fill="currentColor" size={30} />,
-  //   user: <TagUser className="text-danger" fill="currentColor" size={30} />,
-  // };
+
   const menuItems = [
     "Profile",
     "Dashboard",
@@ -53,7 +45,7 @@ export default function MdNavbar() {
               <Button
                 disableRipple
                 className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                // endContent={icons.chevron}
+                endContent={<ChevronDown/>}
                 radius="sm"
                 variant="light"
               >
