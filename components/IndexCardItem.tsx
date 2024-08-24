@@ -26,13 +26,13 @@ export default function IndexCardItem(props: IndexCardItemProps) {
           <Avatar isBordered radius="full" size="md" src={props.avatar} />
           <div className="flex flex-col gap-1 items-start justify-center">
             <Link
-              href={"https://" + props.shortUrl}
+              href={"https://lru.me/" + props.shortUrl}
               color="foreground"
               isExternal
               underline="hover"
               className="font-sans font-bold"
             >
-              {props.shortUrl}
+              {"lru.me/" + props.shortUrl}
             </Link>
             <Link
               href={props.longUrl}
