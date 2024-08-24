@@ -25,24 +25,22 @@ export default function IndexCardItem(props: IndexCardItemProps) {
         <div className="flex gap-5">
           <Avatar isBordered radius="full" size="md" src={props.avatar} />
           <div className="flex flex-col gap-1 items-start justify-center">
-            <Link
+            <a
               href={"https://api.lru.me/" + props.shortUrl}
-              color="foreground"
-              isExternal
-              underline="hover"
-              className="font-sans font-bold"
+              target="_blank" // 确保链接在新标签页中打开
+              rel="noopener noreferrer" // 安全性考虑
+              className="font-sans font-bold text-foreground hover:underline"
             >
               {"lru.me/" + props.shortUrl}
-            </Link>
-            <Link
+            </a>
+            <a
               href={props.longUrl}
-              color="foreground"
-              isExternal
-              underline="always"
-              className="text-small text-default-400 font-sans font-semibold"
+              target="_blank" // 确保链接在新标签页中打开
+              rel="noopener noreferrer" // 安全性考虑
+              className="text-small  font-sans font-semibold text-foreground hover:underline"
             >
-              {props.shortUrl}
-            </Link>
+              {props.longUrl}
+            </a>
           </div>
           <CopyButton url={props.shortUrl} />
           <QrCode className="cursor-pointer" />
