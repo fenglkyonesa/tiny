@@ -106,7 +106,7 @@ export default function Home() {
           type="text"
           className="w-full"
           variant="bordered"
-          placeholder="https://www.yzgz.cc"
+          placeholder="https://lru.me"
           value={value}
           onValueChange={setValue}
           startContent={<Link2 />}
