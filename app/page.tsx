@@ -28,7 +28,7 @@ export default function Home() {
     };
 
     // 从 API 获取数据
-    fetch("http://api.lru.me/api/statistics/top") // 替换为你的 API 端点
+    fetch("https://api.lru.me/api/statistics/top") // 替换为你的 API 端点
       .then((response) => {
         if (!response.ok) {
           throw new Error("网络响应不正常");
@@ -53,7 +53,7 @@ export default function Home() {
 
     // 创建 URL 查询参数
     const params = new URLSearchParams({ longUrl: value }).toString();
-    fetch("http://api.lru.me/api/shortens", {
+    fetch("https://api.lru.me/api/shortens", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded", // 更新请求头
