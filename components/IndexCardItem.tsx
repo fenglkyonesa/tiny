@@ -26,7 +26,7 @@ export default function IndexCardItem(props: IndexCardItemProps) {
           <Avatar isBordered radius="full" size="md" src={props.avatar} />
           <div className="flex flex-col gap-1 items-start justify-center">
             <Link
-              href={"https://lru.me/" + props.shortUrl}
+              href={"https://api.lru.me/" + props.shortUrl}
               color="foreground"
               isExternal
               underline="hover"
