@@ -2,10 +2,10 @@
 import { Button, Input, Skeleton } from "@nextui-org/react";
 import MdNavbar from "../components/MdNavbar";
 import { Link2 } from "lucide-react";
-import StartButton from "@/components/StartButton";
 import { useEffect, useState } from "react";
-import IndexCardItem from "@/components/IndexCardItem";
 import toast from "react-hot-toast";
+import StartButton from "../components/StartButton";
+import IndexCardItem from "../components/IndexCardItem";
 
 interface IndexCardItemProps {
   shortUrl: string;
