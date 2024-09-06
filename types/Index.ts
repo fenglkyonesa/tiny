@@ -1,8 +1,8 @@
-interface IndexCardItemProps {
-  shortUrl: string;
-  longUrl: string;
-  clicks: number;
-}
+// interface IndexCardItemProps {
+//   shortUrl: string;
+//   longUrl?: string;
+//   clicks: number;
+// }
 interface DataItem {
   [key: string]: any; // Allows any property
 }
@@ -15,7 +15,7 @@ interface QRCodeGeneratorOp {
 
 interface IndexCardItemProps {
   shortUrl: string;
-  longUrl: string;
+  longUrl?: string;
   clicks: number;
-  onDelete: (shortUrl: string) => void;
+  onDelete?: (shortUrl: string) => void;
 }

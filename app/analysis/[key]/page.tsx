@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { key: string } }) {
           shortUrl={params.key}
           tabKeys={["country", "province", "city"]}
         />
-        <CHartCardTabs shortUrl={params.key} tabKeys={["referrer"]} />
+        <CHartCardTabs shortUrl={params.key} tabKeys={["referrer", "qr"]} />
       </div>
     </main>
   );

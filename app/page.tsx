@@ -1,7 +1,14 @@
 "use client";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Cookie from "js-cookie";
-import { Button, Card, CardHeader, Input, Tooltip } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardHeader,
+  Input,
+  Spinner,
+  Tooltip,
+} from "@nextui-org/react";
 import IndexCardItem from "@/components/IndexCardItem";
 import StartButton from "@/components/StartButton";
 import { useFetchData } from "@/hooks/useFetchData";
@@ -13,6 +20,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import CenterNavbar from "@/components/CenterNavbar";
 import IndexTabs from "@/components/IndexTabs";
 import Link from "next/link";
+import React from "react";
 
 export const runtime = "edge";
 const Home = () => {
@@ -63,13 +71,21 @@ const Home = () => {
     [data]
   );
 
-  // Memoized variable to check if input is disabled
-  const isDisabled = useMemo(() => data.length > 4, [data.length]);
-
   // Event handlers
   const handleMouseEnter = () => setHovered(true);
   const handleMouseLeave = () => setHovered(false);
+  const validateUrl = (inputUrl: string) =>
+    inputUrl.match(
+      /^(https?:\/\/)?([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$/i
+    );
 
+  const isInvalid = React.useMemo(() => {
+    if (inputUrl === "") return false;
+
+    return validateUrl(inputUrl) ? false : true;
+  }, [inputUrl]);
+  // Memoized variable to check if input is disabled
+  const isDisabled = useMemo(() => data.length > 4, [data.length]);
   return (
     <main className="flex min-h-screen w-full flex-col items-center">
       <CenterNavbar />
@@ -100,7 +116,12 @@ const Home = () => {
                   links or create a free account to create more links.
                 </p>
               </CardHeader>
-              <Button as={Link} color="primary" href="/auth" variant="shadow">
+              <Button
+                as={Link}
+                color="primary"
+                href="/authentication"
+                variant="shadow"
+              >
                 Start For Free
               </Button>
             </Card>
@@ -112,7 +133,10 @@ const Home = () => {
               className="w-full"
               variant="bordered"
               disabled={isDisabled}
+              isInvalid={isInvalid}
               placeholder="https://lru.me"
+              color={isInvalid ? "danger" : "primary"}
+              errorMessage="Please enter a valid url"
               value={inputUrl}
               onChange={(e) => setInputUrl(e.target.value)}
             />
@@ -120,20 +144,19 @@ const Home = () => {
         </Tooltip>
 
         <Button
-          color={!inputUrl || isPosting ? "default" : "primary"}
-          isDisabled={!inputUrl || isPosting}
+          color={!inputUrl || isPosting || isInvalid ? "default" : "primary"}
+          isDisabled={!inputUrl || isPosting || isInvalid}
           className="w-full"
           onClick={handlePostRequest}
         >
-          {isPosting ? "Loading" : "Confirm"}
+          {isPosting ? <Spinner /> : "Continue"}
         </Button>
 
         <IndexCardItem
           key={key}
           shortUrl={key}
-          longUrl={"https://lru.me"}
-          clicks={clicks || 0}
-          onDelete={handleDelete}
+          clicks={99899}
+          longUrl="https://lru.me"
         />
 
         {loading ? (

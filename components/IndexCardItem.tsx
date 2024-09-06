@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import numeral from "numeral";
 import { motion } from "framer-motion";
 import { CornerDownRight, QrCode } from "lucide-react";
@@ -7,12 +7,10 @@ import {
   AccordionItem,
   Avatar,
   Button,
-  Checkbox,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -35,13 +33,14 @@ import { HexColorPicker } from "react-colorful"; // Import the color picker
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const formatValue = (value: number) => numeral(value).format("0.a");
-
 const IndexCardItem: React.FC<IndexCardItemProps> = React.memo(
-  ({ shortUrl, longUrl, clicks, onDelete }) => {
+  ({ shortUrl, longUrl, clicks, onDelete = null }) => {
     const handleDragEnd = useCallback(
       (_event: any, info: { offset: { x: number } }) => {
         if (info.offset.x < -100) {
-          onDelete(shortUrl);
+          if (onDelete !== null) {
+            onDelete(shortUrl);
+          }
         }
       },
       [shortUrl, onDelete]
@@ -122,12 +121,12 @@ const IndexCardItem: React.FC<IndexCardItemProps> = React.memo(
         whileDrag={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <div className="flex gap-8 items-center">
+        <div className="flex gap-2 items-center">
           <Avatar
             isBordered
             radius="full"
             size="md"
-            src={`${longUrl}/favicon.ico`}
+            src={`${longUrl}/favicon.ico` || "/next.svg"}
           />
           <div className="flex flex-col">
             <div className="flex flex-row gap-4 items-center">
@@ -151,7 +150,7 @@ const IndexCardItem: React.FC<IndexCardItemProps> = React.memo(
                 isOpen={isOpen}
                 backdrop={"blur"}
                 onOpenChange={onOpenChange}
-                placement="top-center"
+                placement="center"
               >
                 <ModalContent>
                   {(onClose) => (
@@ -200,7 +199,6 @@ const IndexCardItem: React.FC<IndexCardItemProps> = React.memo(
                               step={5}
                               color="foreground"
                               label="设置大小"
-                              showSteps={true}
                               maxValue={256}
                               minValue={156}
                               defaultValue={156}
@@ -278,31 +276,31 @@ const IndexCardItem: React.FC<IndexCardItemProps> = React.memo(
             <div className="flex items-center gap-1">
               <CornerDownRight size={16} />
               <Link
-                href={longUrl}
+                href={longUrl || "/image.png"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground text-sm font-medium hover:underline"
+                className="text-foreground truncate ... max-w-32 text-sm font-medium hover:underline"
               >
                 {longUrl}
               </Link>
             </div>
           </div>
-          <Link
-            href={`/analysis/${shortUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Tooltip content={`clicks: ${clicks}`} className="flex md:hidden">
-              <Button color="primary" radius="full" size="sm" variant={"solid"}>
-                <p className="hidden md:block font-sans font-bold">view</p>
-                <div className="flex md:hidden items-center justify-center gap-2">
-                  <ECGAnimation color="#000" />
-                  <p>{formatValue(clicks)}</p>
-                </div>
-              </Button>
-            </Tooltip>
-          </Link>
         </div>
+        <Link
+          href={`/analysis/${shortUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Tooltip content={`clicks: ${clicks}`} className="flex md:hidden">
+            <Button color="primary" radius="full" size="sm" variant={"solid"}>
+              <p className="hidden md:block font-sans font-bold">view</p>
+              <div className="flex md:hidden items-center justify-center gap-2 max-w-16">
+                <ECGAnimation color="#000" />
+                <p>{formatValue(clicks)}</p>
+              </div>
+            </Button>
+          </Tooltip>
+        </Link>
       </motion.div>
     );
   }

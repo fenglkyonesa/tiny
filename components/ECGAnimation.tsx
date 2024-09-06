@@ -29,7 +29,7 @@ const ECGAnimation: React.FC<ECGAnimationProps> = React.memo(({ color }) => {
     <motion.svg
       viewBox="0 0 100 40"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-16 h-6"
+      className="w-12  h-6"
     >
       <motion.path
         d="M0 20 L10 10 L20 30 L30 15 L40 25 L50 5 L60 30 L70 20 L80 25 L90 10 L100 20"

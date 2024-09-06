@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import Cookie from "js-cookie";
+import React from "react";
 
 export function usePostRequest(
   value: string,
@@ -19,24 +20,23 @@ export function usePostRequest(
     }
     return urlString;
   };
+  const validateUrl = (inputUrl: string) =>
+    inputUrl.match(
+      /^(https?:\/\/)?([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(\/[^\s]*)?$/i
+    );
 
-  // 更严格的 URL 校验函数
-  const isValidUrl = (urlString: string): boolean => {
-    const urlPattern =
-      /^(https:\/\/)(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/;
-    return urlPattern.test(urlString);
-  };
+  const isInvalid = React.useMemo(() => {
+    if (value === "") return false;
+
+    return validateUrl(value) ? false : true;
+  }, [value]);
 
   const handlePostRequest = useCallback(async () => {
-    if (!value) return;
-
+    if (isInvalid) {
+      return;
+    }
     // 规范化 URL，确保其有协议部分
     const normalizedUrl = ensureHttpsUrl(value);
-
-    if (!isValidUrl(normalizedUrl)) {
-      console.error("Invalid URL format:", normalizedUrl);
-      return; // URL 格式不正确，直接返回
-    }
 
     setIsPosting(true);
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;

@@ -7,7 +7,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -17,6 +16,7 @@ import {
   NavbarMenuToggle,
 } from "@nextui-org/react";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export default function CenterNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -120,9 +120,6 @@ export default function CenterNavbar() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/authentication">Login</Link>
-        </NavbarItem>
         <NavbarItem>
           <Button
             as={Link}
@@ -130,14 +127,14 @@ export default function CenterNavbar() {
             href="/authentication"
             variant="shadow"
           >
-            Sign Up
+            Join Us
           </Button>
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link className="w-full" color={"foreground"} href="#" size="lg">
+            <Link className="w-full" color={"foreground"} href="#">
               {item}
             </Link>
           </NavbarMenuItem>
