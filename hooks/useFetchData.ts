@@ -52,7 +52,7 @@ export function useFetchData(
 
           break; // 成功后跳出循环
         } catch (error) {
-          console.error("Fetch error:", error.message);
+          console.error("Fetch error:", error);
           if (retryCount < retries && options?.retryDelay) {
             await new Promise((resolve) =>
               setTimeout(resolve, options.retryDelay)
