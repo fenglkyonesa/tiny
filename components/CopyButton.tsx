@@ -15,7 +15,7 @@ const CopyButton: React.FC<{ url: string }> = ({ url }) => {
     navigator.clipboard
       .writeText(url)
       .then(() => {
-        toast.success("Successfully toasted!");
+        toast.success("😊 Successfully toasted!");
         setTimeout(() => {
           setIsCopied(false); // Restore the original icon
           setIsDisabled(false); // Re-enable the button
@@ -29,16 +29,13 @@ const CopyButton: React.FC<{ url: string }> = ({ url }) => {
   };
 
   return (
-    <>
-      <Toaster position="bottom-center" reverseOrder={false} />
-      <div
-        onClick={handleCopy}
-        className="cursor-pointer  w-6 h-6"
-        onMouseDown={(e) => e.preventDefault()} // Prevent default action on mouse down
-      >
-        {isCopied ? <CheckCircle className="text-green-500" /> : <Copy />}
-      </div>
-    </>
+    <div
+      onClick={handleCopy}
+      className="cursor-pointer w-6 h-6"
+      onMouseDown={(e) => e.preventDefault()} // Prevent default action on mouse down
+    >
+      {isCopied ? <CheckCircle className="text-green-500" /> : <Copy />}
+    </div>
   );
 };
 

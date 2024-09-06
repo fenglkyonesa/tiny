@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Fan } from 'lucide-react';
+import React from "react";
+import { Fan } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Logo() {
   return (
@@ -9,10 +9,11 @@ export default function Logo() {
       whileTap={{
         scale: 0.8,
         rotate: -90,
-        borderRadius: "100%"
+        borderRadius: "100%",
       }}
     >
       <Fan />
     </motion.div>
+    // <Fan />
   );
 }

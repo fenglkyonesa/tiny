@@ -1,10 +1,24 @@
-"use client"
-import React from 'react'
-import Logo from './Logo';
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from '@nextui-org/react';
-import { ChevronDown } from 'lucide-react';
+"use client";
+import React from "react";
+import Logo from "./Logo";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from "@nextui-org/react";
+import { ChevronDown } from "lucide-react";
 
-export default function MdNavbar() {
+export default function CenterNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
@@ -20,32 +34,28 @@ export default function MdNavbar() {
     "Log Out",
   ];
   return (
-    <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} >
+    <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
-        <Link href='/' color="foreground" className='hover:text-blue-500'>
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
+        <Link href="/" color="foreground">
           <NavbarBrand>
             <Logo />
-            <p className="font-bold mx-2 text-inherit">YZGZ</p>
+            <p className="font-bold mx-2 text-inherit">LRU</p>
           </NavbarBrand>
         </Link>
       </NavbarContent>
 
-      <NavbarContent justify='end' className="md:hidden"
-      >
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        />
-      </NavbarContent>
-
-
-      <NavbarContent className="hidden md:flex gap-4" justify="center">
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <Dropdown>
           <NavbarItem>
             <DropdownTrigger>
               <Button
                 disableRipple
                 className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                endContent={<ChevronDown/>}
+                endContent={<ChevronDown />}
                 radius="sm"
                 variant="light"
               >
@@ -97,24 +107,29 @@ export default function MdNavbar() {
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <NavbarItem >
+        <NavbarItem>
           <Link color="foreground" href="#">
             顾客
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="/pricing">
             价格
           </Link>
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end" className='hidden md:flex'>
+      <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link href="/authentication">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="shadow">
+          <Button
+            as={Link}
+            color="primary"
+            href="/authentication"
+            variant="shadow"
+          >
             Sign Up
           </Button>
         </NavbarItem>
@@ -122,17 +137,12 @@ export default function MdNavbar() {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              className="w-full"
-              color={"foreground"} 
-              href="#" 
-              size="lg"
-            >
+            <Link className="w-full" color={"foreground"} href="#" size="lg">
               {item}
             </Link>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
     </Navbar>
-  )
+  );
 }
