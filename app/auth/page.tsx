@@ -1,7 +1,7 @@
 "use client";
 import { Button, Divider, Input, Link, Spinner } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { Github, MoveLeft } from "lucide-react";
+import { Github, MoveLeft, PencilLine } from "lucide-react";
 import Logo from "@/components/Logo";
 import {
   InputOTP,
@@ -9,7 +9,8 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { PencilLine } from "lucide-react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export const runtime = "edge";
 
@@ -17,35 +18,53 @@ export default function Page() {
   const [email, setEmail] = useState<string>("");
   const [stepper, setStepper] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false); // 添加一个加载状态
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState<string>("");
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const validateEmail = (email: string) =>
-    email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+    email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
   const isInvalid = React.useMemo(() => {
     if (email === "") return false;
 
     return validateEmail(email) ? false : true;
   }, [email]);
-
+  const router = useRouter(); // 创建路由对象
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault(); // 阻止表单默认提交行为
     setLoading(true); // 开始加载
+    const data = {
+      email,
+      code: value,
+    };
+
     try {
-      // 模拟异步操作，例如API调用
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setValue("");
-      setStepper(1);
-      console.log(email); // 打印邮件地址
+      const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json(); // 将响应体转换为JSON
+      localStorage.setItem("token", result.token); // 保存token到本地存储
+      router.push("/dash"); // 跳转到Dashboard页面
     } catch (error) {
-      console.error("Error submitting form:", error);
+      setValue("");
+      toast.error("Failed to verify the code. Please try again.");
     } finally {
-      setLoading(false); // 结束加载
+      setLoading(false);
     }
   };
-  const [seconds, setSeconds] = useState(0);
+
+  const [seconds, setSeconds] = useState<number>(0);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null; // 明确interval的类型
@@ -55,27 +74,30 @@ export default function Page() {
 
     return () => {
       if (interval !== null) {
-        // 检查interval是否为null
         clearInterval(interval); // 清理定时器
       }
     };
   }, [seconds]);
 
   const resendCode = async (email: string) => {
+    setValue("");
     setStepper(2);
-    setSeconds(5);
+    setSeconds(60);
     try {
-      // 模拟异步操作，例如API调用
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(email); // 打印邮件地址
+      const response = await fetch(
+        `${apiBaseUrl}/api/auth/sendCode?email=${email}`
+      );
+      if (!response.ok) throw new Error("Network response was not ok");
+      toast.success("Verification code sent successfully!");
     } catch (error) {
-      console.error("Error submitting form:", error);
+      toast.error("Failed to send verification code. Please try again.");
     }
   };
+
   return (
-    <main className="flex justify-center items-center w-full min-h-screen">
+    <main className="flex justify-center items-center w-full min-h-screen px-4">
       <div className="w-96 h-[600px] flex flex-col gap-3">
-        {stepper == 1 ? (
+        {stepper === 1 ? (
           <Link href="/" className="font-semibold gap-1" title="back">
             <Logo />
             LRU
@@ -91,16 +113,16 @@ export default function Page() {
         )}
 
         <p className="text-center font-bold text-2xl">
-          {stepper == 1
+          {stepper === 1
             ? "The world exists because of you"
             : "Verify the verification code"}
         </p>
         <p className="text-zinc-400 font-semibold">
-          {stepper == 1
+          {stepper === 1
             ? "Enter your email below to Join Us"
             : "Enter the verification code you received"}
         </p>
-        {stepper == 1 ? (
+        {stepper === 1 ? (
           <>
             <form>
               <Input
@@ -118,21 +140,21 @@ export default function Page() {
               />
               <Button
                 className="w-full mt-2"
-                color={loading || !email || isInvalid ? "default" : "primary"} // 动态设置颜色
+                color={loading || !email || isInvalid ? "default" : "primary"}
                 type="submit"
                 isDisabled={loading || !email || isInvalid}
                 onClick={() => resendCode(email)}
               >
-                {loading ? <Spinner /> : "Sign In with Email"}
+                {loading ? <Spinner /> : "Send Verification Code"}
               </Button>
             </form>
             <div className="flex justify-center gap-2 items-center my-4">
               <Divider className="w-24" />
-              <span>OR CONTINUE WITH</span>
+              <span className="text-sm md:font-semibold">OR CONTINUE WITH</span>
               <Divider className="w-24" />
             </div>
             <Button
-              color={loading ? "default" : "primary"} // 动态设置颜色
+              color={loading ? "default" : "primary"}
               type="button"
               isDisabled={loading}
               startContent={<Github />}
@@ -154,7 +176,7 @@ export default function Page() {
           </>
         ) : (
           <>
-            <div className="flex flex-col items-center w-full  gap-4 justify-center">
+            <div className="flex flex-col items-center w-full gap-4 justify-center">
               <div className="flex gap-1">
                 {email}
                 <span
@@ -167,7 +189,7 @@ export default function Page() {
               <InputOTP
                 maxLength={6}
                 value={value}
-                onChange={(value) => setValue(value)}
+                onChange={(val) => setValue(val)}
               >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />

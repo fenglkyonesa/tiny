@@ -121,12 +121,7 @@ export default function CenterNavbar() {
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button
-            as={Link}
-            color="primary"
-            href="/authentication"
-            variant="shadow"
-          >
+          <Button as={Link} color="primary" href="/auth" variant="shadow">
             Join Us
           </Button>
         </NavbarItem>

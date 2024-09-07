@@ -4,7 +4,7 @@ import React from "react";
 
 export default function StartButton() {
   return (
-    <Link href={"/authentication"} className="pt-2">
+    <Link href={"/auth"} className="pt-2">
       <Button
         variant="shadow"
         radius="full"
